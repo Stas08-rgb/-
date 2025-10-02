@@ -10,7 +10,7 @@ bg.Position = UDim2.new(0, 0, 0, 0)
 bg.BackgroundColor3 = Color3.new(0, 0, 0)
 bg.Parent = gui
 
--- Звёзды (белые точки без текста)
+-- Звёзды (только точки, без текста)
 for i = 1, 100 do
 	local star = Instance.new("Frame")
 	star.Size = UDim2.new(0, 2, 0, 2)
@@ -18,19 +18,20 @@ for i = 1, 100 do
 	star.BackgroundColor3 = Color3.new(1, 1, 1)
 	star.BorderSizePixel = 0
 	star.Parent = bg
+	
 	task.spawn(function()
 		while true do
 			local newX, newY = math.random(), math.random()
-			star:TweenPosition(UDim2.new(newX, 0, newY, 0), "Out", "Sine", 2, true)
-			task.wait(2)
+			star:TweenPosition(UDim2.new(newX, 0, newY, 0), "Out", "Sine", 3, true)
+			task.wait(3)
 		end
 	end)
 end
 
--- Прогресс бар (поднят чуть выше)
+-- Прогресс бар (поднят выше)
 local barBg = Instance.new("Frame")
 barBg.Size = UDim2.new(0.8, 0, 0, 30)
-barBg.Position = UDim2.new(0.1, 0, 0.8, 0)
+barBg.Position = UDim2.new(0.1, 0, 0.75, 0) -- выше чем раньше
 barBg.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
 barBg.Parent = bg
 
@@ -48,7 +49,7 @@ percentText.Font = Enum.Font.SourceSansBold
 percentText.TextSize = 20
 percentText.Parent = barBg
 
--- Плавная загрузка (5 минут = 300 секунд)
+-- Плавная загрузка 5 минут
 task.spawn(function()
 	local totalTime = 300
 	for i = 0, totalTime do
