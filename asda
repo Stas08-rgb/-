@@ -17,6 +17,7 @@ for i = 1, 100 do
 	star.Position = UDim2.new(math.random(), 0, math.random(), 0)
 	star.BackgroundColor3 = Color3.new(1, 1, 1)
 	star.BorderSizePixel = 0
+	star.ZIndex = 1
 	star.Parent = bg
 	
 	task.spawn(function()
@@ -31,12 +32,13 @@ end
 -- Текст "Loading script..."
 local title = Instance.new("TextLabel")
 title.Size = UDim2.new(1, 0, 0, 50)
-title.Position = UDim2.new(0, 0, 0.1, 0)
+title.Position = UDim2.new(0, 0, 0.05, 0) -- чуть ниже края
 title.Text = "Loading script..."
 title.TextColor3 = Color3.new(1, 1, 1)
 title.BackgroundTransparency = 1
 title.Font = Enum.Font.SourceSansBold
 title.TextSize = 36
+title.ZIndex = 10 -- поверх звёзд
 title.Parent = bg
 
 -- Анимация точек (...)
@@ -55,11 +57,13 @@ local barBg = Instance.new("Frame")
 barBg.Size = UDim2.new(0.8, 0, 0, 30)
 barBg.Position = UDim2.new(0.1, 0, 0.75, 0)
 barBg.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
+barBg.ZIndex = 5
 barBg.Parent = bg
 
 local bar = Instance.new("Frame")
 bar.Size = UDim2.new(0, 0, 1, 0)
 bar.BackgroundColor3 = Color3.new(0, 0.5, 1)
+bar.ZIndex = 6
 bar.Parent = barBg
 
 local percentText = Instance.new("TextLabel")
@@ -69,6 +73,7 @@ percentText.BackgroundTransparency = 1
 percentText.TextColor3 = Color3.new(1, 1, 1)
 percentText.Font = Enum.Font.SourceSansBold
 percentText.TextSize = 20
+percentText.ZIndex = 7
 percentText.Parent = barBg
 
 -- Плавная загрузка 4 минуты (240 сек)
