@@ -6,7 +6,6 @@ gui.Parent = player:WaitForChild("PlayerGui")
 
 local bg = Instance.new("Frame")
 bg.Size = UDim2.new(1, 0, 1, 0)
-bg.Position = UDim2.new(0, 0, 0, 0)
 bg.BackgroundColor3 = Color3.new(0, 0, 0)
 bg.Parent = gui
 
@@ -22,24 +21,30 @@ for i = 1, 100 do
 	
 	task.spawn(function()
 		while true do
-			local newX, newY = math.random(), math.random()
-			star:TweenPosition(UDim2.new(newX, 0, newY, 0), "Out", "Sine", 3, true)
+			star:TweenPosition(UDim2.new(math.random(), 0, math.random(), 0), "Out", "Sine", 3, true)
 			task.wait(3)
 		end
 	end)
 end
 
+-- Отдельный контейнер для текста и прогресса
+local overlay = Instance.new("Frame")
+overlay.Size = UDim2.new(1, 0, 1, 0)
+overlay.BackgroundTransparency = 1
+overlay.ZIndex = 10 -- поверх всего
+overlay.Parent = gui
+
 -- Текст "Loading script..."
 local title = Instance.new("TextLabel")
 title.Size = UDim2.new(1, 0, 0, 50)
-title.Position = UDim2.new(0, 0, 0.05, 0) -- чуть ниже края
+title.Position = UDim2.new(0, 0, 0.05, 0)
 title.Text = "Loading script..."
 title.TextColor3 = Color3.new(1, 1, 1)
 title.BackgroundTransparency = 1
 title.Font = Enum.Font.SourceSansBold
 title.TextSize = 36
-title.ZIndex = 10 -- поверх звёзд
-title.Parent = bg
+title.ZIndex = 11
+title.Parent = overlay
 
 -- Анимация точек (...)
 task.spawn(function()
@@ -52,18 +57,18 @@ task.spawn(function()
 	end
 end)
 
--- Прогресс бар (поднят выше)
+-- Прогресс бар
 local barBg = Instance.new("Frame")
 barBg.Size = UDim2.new(0.8, 0, 0, 30)
 barBg.Position = UDim2.new(0.1, 0, 0.75, 0)
 barBg.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
-barBg.ZIndex = 5
-barBg.Parent = bg
+barBg.ZIndex = 11
+barBg.Parent = overlay
 
 local bar = Instance.new("Frame")
 bar.Size = UDim2.new(0, 0, 1, 0)
 bar.BackgroundColor3 = Color3.new(0, 0.5, 1)
-bar.ZIndex = 6
+bar.ZIndex = 12
 bar.Parent = barBg
 
 local percentText = Instance.new("TextLabel")
@@ -73,10 +78,10 @@ percentText.BackgroundTransparency = 1
 percentText.TextColor3 = Color3.new(1, 1, 1)
 percentText.Font = Enum.Font.SourceSansBold
 percentText.TextSize = 20
-percentText.ZIndex = 7
+percentText.ZIndex = 13
 percentText.Parent = barBg
 
--- Плавная загрузка 4 минуты (240 сек)
+-- Плавная загрузка (4 минуты = 240 сек)
 task.spawn(function()
 	local totalTime = 240
 	for i = 0, totalTime do
