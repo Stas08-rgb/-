@@ -3,21 +3,13 @@ gui.IgnoreGuiInset = true
 gui.ResetOnSpawn = false
 gui.Parent = game:GetService("CoreGui")
 
+-- Фон (тёмно-синий)
 local bg = Instance.new("Frame")
 bg.Size = UDim2.new(1, 0, 1, 0)
-bg.BackgroundColor3 = Color3.new(0, 0, 0)
+bg.BackgroundColor3 = Color3.fromRGB(5, 5, 25)
 bg.Parent = gui
 
--- Градиент на фоне
-local gradient = Instance.new("UIGradient")
-gradient.Color = ColorSequence.new{
-	ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 0, 0)),
-	ColorSequenceKeypoint.new(1, Color3.fromRGB(10, 10, 40))
-}
-gradient.Rotation = 270
-gradient.Parent = bg
-
--- Обычные звёзды
+-- Звёзды (мерцают через размер)
 for i = 1, 100 do
 	local star = Instance.new("Frame")
 	star.Size = UDim2.new(0, 2, 0, 2)
@@ -29,32 +21,33 @@ for i = 1, 100 do
 
 	task.spawn(function()
 		while true do
-			-- плавное движение
+			-- движение
 			star:TweenPosition(UDim2.new(math.random(), 0, math.random(), 0), "Out", "Sine", 3, true)
-			-- мерцание
-			star:TweenTransparency(math.random(), "Out", "Sine", 2, true)
-			task.wait(3)
+			-- мерцание (увеличение / уменьшение)
+			local size = math.random(1, 3)
+			star:TweenSize(UDim2.new(0, size, 0, size), "Out", "Sine", 1, true)
+			task.wait(2)
 		end
 	end)
 end
 
--- Падающие звёзды
+-- Падающие звёзды (белые линии)
 for i = 1, 5 do
 	task.spawn(function()
 		while true do
 			local shootingStar = Instance.new("Frame")
-			shootingStar.Size = UDim2.new(0, 3, 0, 3)
+			shootingStar.Size = UDim2.new(0, 2, 0, 20)
 			shootingStar.BackgroundColor3 = Color3.new(1, 1, 1)
 			shootingStar.BorderSizePixel = 0
 			shootingStar.ZIndex = 2
 			shootingStar.Position = UDim2.new(math.random(), 0, -0.1, 0)
 			shootingStar.Parent = bg
 
-			-- падает по диагонали
+			-- падение вниз
 			shootingStar:TweenPosition(UDim2.new(math.random(), 0, 1.2, 0), "Out", "Linear", 2, true)
-			task.wait(2.5)
+			task.wait(2.2)
 			shootingStar:Destroy()
-			task.wait(math.random(5, 15)) -- иногда падает
+			task.wait(math.random(5, 12))
 		end
 	end)
 end
