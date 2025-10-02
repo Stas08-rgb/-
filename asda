@@ -1,14 +1,18 @@
 local player = game.Players.LocalPlayer
 local gui = Instance.new("ScreenGui")
+gui.IgnoreGuiInset = true
+gui.ResetOnSpawn = false
 gui.Parent = player:WaitForChild("PlayerGui")
 
 local bg = Instance.new("Frame")
 bg.Size = UDim2.new(1, 0, 1, 0)
+bg.Position = UDim2.new(0, 0, 0, 0)
 bg.BackgroundColor3 = Color3.new(0, 0, 0)
 bg.Parent = gui
 
+-- Звёзды (белые точки без текста)
 for i = 1, 100 do
-	local star = Instance.new("TextLabel")
+	local star = Instance.new("Frame")
 	star.Size = UDim2.new(0, 2, 0, 2)
 	star.Position = UDim2.new(math.random(), 0, math.random(), 0)
 	star.BackgroundColor3 = Color3.new(1, 1, 1)
@@ -16,41 +20,23 @@ for i = 1, 100 do
 	star.Parent = bg
 	task.spawn(function()
 		while true do
-			star.Position = UDim2.new(math.random(), 0, math.random(), 0)
-			task.wait(math.random(1, 10)/10)
+			local newX, newY = math.random(), math.random()
+			star:TweenPosition(UDim2.new(newX, 0, newY, 0), "Out", "Sine", 2, true)
+			task.wait(2)
 		end
 	end)
 end
 
-local title = Instance.new("TextLabel")
-title.Size = UDim2.new(1, 0, 0, 50)
-title.Position = UDim2.new(0, 0, 0, 20)
-title.Text = "Loading script..."
-title.TextColor3 = Color3.new(1, 1, 1)
-title.BackgroundTransparency = 1
-title.Font = Enum.Font.SourceSansBold
-title.TextSize = 36
-title.Parent = bg
-
-task.spawn(function()
-	local baseText = "Loading script"
-	local dots = 0
-	while true do
-		dots = (dots % 3) + 1
-		title.Text = baseText .. string.rep(".", dots)
-		task.wait(0.5)
-	end
-end)
-
+-- Прогресс бар (поднят чуть выше)
 local barBg = Instance.new("Frame")
 barBg.Size = UDim2.new(0.8, 0, 0, 30)
-barBg.Position = UDim2.new(0.1, 0, 0.9, 0)
+barBg.Position = UDim2.new(0.1, 0, 0.8, 0)
 barBg.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
 barBg.Parent = bg
 
 local bar = Instance.new("Frame")
 bar.Size = UDim2.new(0, 0, 1, 0)
-bar.BackgroundColor3 = Color3.new(0, 0.5, 1) -- синий цвет
+bar.BackgroundColor3 = Color3.new(0, 0.5, 1) -- синий
 bar.Parent = barBg
 
 local percentText = Instance.new("TextLabel")
@@ -62,11 +48,12 @@ percentText.Font = Enum.Font.SourceSansBold
 percentText.TextSize = 20
 percentText.Parent = barBg
 
+-- Плавная загрузка (5 минут = 300 секунд)
 task.spawn(function()
 	local totalTime = 300
 	for i = 0, totalTime do
 		local percent = math.floor((i / totalTime) * 100)
-		bar.Size = UDim2.new(i / totalTime, 0, 1, 0)
+		bar:TweenSize(UDim2.new(i / totalTime, 0, 1, 0), "Out", "Sine", 1, true)
 		percentText.Text = percent .. "%"
 		task.wait(1)
 	end
